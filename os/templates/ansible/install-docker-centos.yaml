@@ -1,0 +1,43 @@
+---
+- name: Install Docker
+  hosts: localhost
+  connection: local
+ 
+  tasks:
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+      become: yes
+
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+      become: yes
+
+    - name: Install Docker
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - device-mapper-persistent-data
+        - lvm2
+      become: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+ 
+    - name: Add user solidfire to docker group
+      user:
+        name: solidfire
+        groups: docker
+        append: yes
+      become: yes

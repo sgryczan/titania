@@ -1,0 +1,41 @@
+---
+# Source: pixiecore/templates/daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pixiecore
+  namespace: pxe
+  labels:
+    app: pixiecore
+spec:
+  selector:
+    matchLabels:
+      app: pixiecore
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pixiecore
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      nodeSelector: {}
+      containers:
+      - name: main
+        image: docker.io/sgryczan/pixiecore:dynamic-2
+        args:
+        - api
+        - -d
+        - --dhcp-no-bind
+        - --ipxe-ipxe
+        - /ipxe/src/bin/undionly.kpxe
+        - --ipxe-efi64
+        - /ipxe/src/bin-x86_64-efi/ipxe.efi
+        - --ipxe-bios
+        - /ipxe/src/bin/ipxe.pxe
+        - http://pxe.sre.solidfire.net
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]

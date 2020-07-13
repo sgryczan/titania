@@ -1,0 +1,7 @@
+{
+  "kernel": "http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/vmlinuz",
+  "initrd": [
+    "http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/initrd.img"
+  ],
+  "cmdline": "ip=dhcp inst.repo=ftp://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot"
+}

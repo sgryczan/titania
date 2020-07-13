@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-vm-config
+  labels:
+    pxe_config: "1"
+data:
+  "00:50:56:ab:40:70": |-
+    {
+      "kernel": "http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/vmlinuz",
+      "initrd": ["http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/initrd.img"],
+      "cmdline": "ip=dhcp inst.repo=http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot"
+    }
+

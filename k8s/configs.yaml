@@ -1,0 +1,94 @@
+---
+# Source: pixiecore-simpleconfig/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ks-pixiecore-simpleconfig
+  labels:
+    app: pixiecore-simpleconfig
+    chart: pixiecore-simpleconfig-0.1.3
+    release: ks
+    heritage: Helm
+data:
+  "00112233": |
+    {
+      "kernel": "http://xxx.xxx.xxx.xxx:9090/vmlinuz",
+      "initrd": ["http://xxx.xxx.xxx.xxx:9090/initrd.img"],
+      "cmdline": "ks=http://xxx.xxx.xxx.xxx:9091/v1/boot/ks.cfg ksdevice=ens1 console=ttyS1,115200"
+    }
+---
+# Source: pixiecore-simpleconfig/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pixiecore
+  labels:
+    app: pixiecore-simpleconfig
+    chart: pixiecore-simpleconfig-0.1.3
+    release: ks
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  externalIPs:
+    null
+  selector:
+    app: pixiecore-simpleconfig
+    release: ks
+---
+# Source: pixiecore-simpleconfig/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ks-pixiecore-simpleconfig
+  labels:
+    app: pixiecore-simpleconfig
+    chart: pixiecore-simpleconfig-0.1.3
+    release: ks
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pixiecore-simpleconfig
+      release: ks
+  template:
+    metadata:
+      labels:
+        app: pixiecore-simpleconfig
+        release: ks
+      annotations:
+        checksum/config: "cc9e940581c83f2ab89bbedae5ec6b70a7b8edfde42fc492fa69952ec1fb99aa"
+    spec:
+      containers:
+        - name: pixiecore-simpleconfig
+          image: "nginx:stable"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/v1/boot
+      volumes:
+      - name: config
+        configMap:
+          name: ks-pixiecore-simpleconfig
+          items:
+          - key: "00112233"
+            path: "00:11:22:33"

@@ -1,0 +1,131 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pixiecore-config
+  namespace: pxe
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: pixiecore-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pixiecore-config
+  namespace: pxe
+  labels:
+    app: pixiecore-config
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pixiecore-config
+  template:
+    metadata:
+      labels:
+        app: pixiecore-config
+    spec:
+      serviceAccountName: pixiecore
+      containers:
+      - name: pixiecore-config
+        image: "nginx:stable"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        resources: {}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/share/nginx/html/v1/boot
+      - name: config-sidecar
+        env:
+        - name: METHOD
+        - name: LABEL
+          value: pxe_config
+        - name: FOLDER
+          value: /usr/share/nginx/html/v1/boot
+        - name: RESOURCE
+          value: both
+        image: sgryczan/k8s-sidecar:0.0.0
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/v1/boot
+          name: config-volume
+      volumes:
+      - emptyDir: {}
+        name: config-volume
+      
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: pixiecore-config
+  namespace: pxe
+spec:
+  rules:
+  - host: pxe.sre.solidfire.net
+    http:
+      paths:
+      - backend:
+          serviceName: pixiecore-config
+          servicePort: 80
+        path: /
+  tls:
+  - secretName: wildcard-cert
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pixiecore
+  namespace: pxe
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "watch", "list"]
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pixiecore
+  namespace: pxe
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pixiecore
+  namespace: pxe
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pixiecore
+subjects:
+- kind: ServiceAccount
+  name: pixiecore
+  namespace: pxe

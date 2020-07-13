@@ -1,0 +1,34 @@
+## How to use
+# your "data" key should be the MAC ADDRESS with no colon, with the extension .mac
+
+# example: MAC: AA:BB:CC:DD:EE:FF
+# use the key: AABBCCDDEEFF.mac
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-vm-config2
+  labels:
+    pxe_config: "1"
+data:
+  "AABBCCDDEEFF.mac": |-
+    {
+      "kernel": "http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/vmlinuz",
+      "initrd": ["http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/initrd.img"],
+      "cmdline": "ip=dhcp inst.repo=http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot"
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-vm-config
+  labels:
+    pxe_config: "1"
+data:
+  "005056ab4070.mac": |-
+    {
+      "kernel": "http://tengu-boot.s3-us-west-2.amazonaws.com/centos8/vmlinuz",
+      "initrd": ["http://tengu-boot.s3-us-west-2.amazonaws.com/centos8/initrd.img"],
+      "cmdline": "ip=dhcp inst.repo=ftp://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot"
+    }
