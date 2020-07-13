@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sgryczan/titania-boot:0.1.0
+    entrypoint: ["/ipxe/entrypoint.sh"]
+    command: ["api", "-d", "--dhcp-no-bind", "--ipxe-ipxe", "/ipxe/src/bin/undionly.kpxe", "--ipxe-efi64", "/ipxe/src/bin/undionly.kpxe", "--ipxe-bios", "/ipxe/src/bin/undionly.kpxe", "http://titania.czan.io"]
+    network_mode: "host"
+    tty: true
+    stdin_open: true
