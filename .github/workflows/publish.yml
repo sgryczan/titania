@@ -1,0 +1,30 @@
+name: Publish Images
+
+on:
+  push:
+
+jobs:
+  publish:
+    name: Build and Publish Images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: sgryczan/titania-boot
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          registry: docker.io
+          dockerfile: Dockerfile
+          tags: "latest,${{ env.RELEASE_VERSION }}"
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@maste
+        with:
+          name: sgryczan/titania-api
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          registry: docker.io
+          workdir: sidecar/
+          dockerfile: Dockerfile
+          tags: "latest,${{ env.RELEASE_VERSION }}"
