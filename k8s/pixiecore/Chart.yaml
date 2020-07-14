@@ -1,7 +1,0 @@
-apiVersion: v1
-description: pixiecore
-maintainers:
-- email: Kevin.Fox@pnnl.gov
-  name: Kevin Fox
-name: pixiecore
-version: 0.0.5

@@ -1,7 +1,0 @@
-{
-  "server": "docker.io",
-  "prefix": "",
-  "org": "pnnlmiscscripts",
-  "repo": "pixiecore",
-  "tag": "1.0.1-2"
-}
