@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Publish to Registry
+      - name: Build and Publish - Boot
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
           name: sgryczan/titania-boot
@@ -18,7 +18,7 @@ jobs:
           registry: docker.io
           dockerfile: Dockerfile
           tags: "latest,${{ env.RELEASE_VERSION }}"
-      - name: Publish to Registry
+      - name: Build and Publish - API
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
           name: sgryczan/titania-api
