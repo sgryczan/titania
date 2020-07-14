@@ -50,7 +50,6 @@ COPY boot/boot.ipxe boot/
 RUN /ipxe/utils/make.sh
 RUN /ipxe/utils/make.sh
 
-COPY boot boot
 ADD entrypoint.sh .
 
 ENTRYPOINT ["/ipxe/entrypoint.sh"]
