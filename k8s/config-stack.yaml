@@ -53,7 +53,7 @@ spec:
         volumeMounts:
         - name: config-volume
           mountPath: /usr/share/nginx/html/v1/boot
-      - name: config-sidecar
+      - name: config-api
         env:
         - name: METHOD
         - name: LABEL
@@ -62,7 +62,7 @@ spec:
           value: /usr/share/nginx/html/v1/boot
         - name: RESOURCE
           value: both
-        image: sgryczan/k8s-sidecar:0.0.0
+        image: sgryczan/k8s-api:0.0.0
         imagePullPolicy: IfNotPresent
         resources: {}
         terminationMessagePath: /dev/termination-log

@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
 	"github.com/google/go-cmp/cmp"
+	"github.com/sgryczan/titania/api/models"
 	"k8s.io/apimachinery/pkg/util/json"
 )
 

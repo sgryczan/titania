@@ -1,7 +1,7 @@
-## API Sidecar
+## API api
 
 ## Summary
-This is a sidecar container that implements the API spec for pixiecore.
+This is a api container that implements the API spec for pixiecore.
 
 ![](./images/api.png)
 

@@ -1,25 +1,25 @@
 VERSION=0.1.0
 IMAGE_NAME=sgryczan/titania-boot
 
-build-all: build-image build-sidecar
-push-all: push push-sidecar
+build-all: build-image build-api
+push-all: push push-api
 
 build-image:
 	docker build --no-cache -t $(IMAGE_NAME):${VERSION} .
 
-build-sidecar:
-	make -C sidecar build
+build-api:
+	make -C api build
 
 push:
 	docker push $(IMAGE_NAME):${VERSION}
 
-push-sidecar:
-	make -C sidecar push
+push-api:
+	make -C api push
 
-test: test-sidecar
+test: test-api
 
-test-sidecar:
-	make -C sidecar test
+test-api:
+	make -C api test
 
 .ONESHELL:
 

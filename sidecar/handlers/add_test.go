@@ -9,7 +9,7 @@ import (
 	"os"
 	"testing"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
+	"github.com/sgryczan/titania/api/models"
 )
 
 var exampleHost = models.Host{

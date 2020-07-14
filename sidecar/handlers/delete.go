@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/utils"
+	"github.com/sgryczan/titania/api/utils"
 )
 
 // DeleteHandler deletes host configs

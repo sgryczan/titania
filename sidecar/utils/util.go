@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
+	"github.com/sgryczan/titania/api/models"
 )
 
 // ValidateJSON gracefully handles JSON Decoder-related errors

@@ -5,7 +5,7 @@
 //	   Schemes: http, https
 //     BasePath: /
 //     Version: 0.0.1
-//     Contact: Team Tengu<ng-sf-sre-teamn@netapp.com> https://bitbucket.ngage.netapp.com/projects/HCIT/repos/pixiecore-dynamic-rom/browse/sidecar
+//     Contact: Team Tengu<ng-sf-sre-teamn@netapp.com> https://bitbucket.ngage.netapp.com/projects/HCIT/repos/pixiecore-dynamic-rom/browse/api
 // swagger:meta
 package main
 
@@ -17,8 +17,8 @@ import (
 	"os"
 	"time"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/handlers"
 	"github.com/gorilla/mux"
+	"github.com/sgryczan/titania/api/handlers"
 )
 
 var hostsDir string
@@ -38,7 +38,7 @@ func main() {
 	r := mux.NewRouter()
 	//r.UseEncodedPath()
 	//r.SkipClean(true)
-	fmt.Println("Started sidecar v" + version)
+	fmt.Println("Started api v" + version)
 
 	r.HandleFunc("/", handlers.HomeHandler)
 	r.HandleFunc("/about", handlers.AboutHandler)

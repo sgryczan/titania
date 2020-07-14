@@ -9,7 +9,7 @@
     "title": "A simple API for PixieCore",
     "contact": {
       "name": "Team Tengu",
-      "url": "https://bitbucket.ngage.netapp.com/projects/HCIT/repos/pixiecore-dynamic-rom/browse/sidecar",
+      "url": "https://bitbucket.ngage.netapp.com/projects/HCIT/repos/pixiecore-dynamic-rom/browse/api",
       "email": "ng-sf-sre-teamn@netapp.com"
     },
     "version": "0.0.1"
@@ -243,7 +243,7 @@
           "x-go-name": "MacAddr"
         }
       },
-      "x-go-package": "bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
+      "x-go-package": "github.com/sgryczan/titania/api/models"
     },
     "HostConfig": {
       "description": "HostConfig stores boot params for hosts",
@@ -275,7 +275,7 @@
           "example": "http://10.117.30.30/images/linux/CentOS-8.1.1911-x86_64-boot/isolinux/vmlinuz"
         }
       },
-      "x-go-package": "bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
+      "x-go-package": "github.com/sgryczan/titania/api/models"
     },
     "Machine": {
       "description": "Machine represents a booted host",
@@ -293,7 +293,7 @@
           "example": "a1:b2:c3:d4:e5:f6"
         }
       },
-      "x-go-package": "bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
+      "x-go-package": "github.com/sgryczan/titania/api/models"
     }
   }
 }

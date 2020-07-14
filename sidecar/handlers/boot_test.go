@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/utils"
+	"github.com/sgryczan/titania/api/utils"
 )
 
 func TestBootHandler(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/utils"
+	"github.com/sgryczan/titania/api/utils"
 )
 
 // BootHandler handles host boot requests from Pixiecore

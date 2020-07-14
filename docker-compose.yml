@@ -10,9 +10,9 @@ services:
     network_mode: "host"
     tty: true
     stdin_open: true
-  sidecar:
+  api:
     build:
-      context: ./sidecar
+      context: ./api
       dockerfile: Dockerfile
     image: sgryczan/titania-api:0.1.0 
     ports:

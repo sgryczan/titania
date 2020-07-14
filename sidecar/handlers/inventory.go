@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/utils"
+	"github.com/sgryczan/titania/api/models"
+	"github.com/sgryczan/titania/api/utils"
 )
 
 var bootedHosts []models.Machine

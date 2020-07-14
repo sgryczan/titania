@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/models"
-	"bitbucket.ngage.netapp.com/scm/hcit/pixiecore-dynamic-rom/sidecar/utils"
+	"github.com/sgryczan/titania/api/models"
+	"github.com/sgryczan/titania/api/utils"
 )
 
 // ListHandler lists all hosts in the inventory

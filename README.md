@@ -5,7 +5,7 @@ Titania is an API driven baremetal provisioning service.
 ## Getting started 
 
 ### Run with `docker-compose`:
-The `docker-compose.yml` file will run the server and sidecar API.
+The `docker-compose.yml` file will run the server and api API.
 1. Run the service:
     ```
     docker-compose up
@@ -22,7 +22,7 @@ The `docker-compose.yml` file will run the server and sidecar API.
 make build-image
 ```
 
-### Example - Run in Docker with sidecar api
+### Example - Run in Docker with api api
 1. Create the stack:
 ```
 docker-compose up
