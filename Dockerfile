@@ -39,6 +39,10 @@ RUN apt-get update && \
 WORKDIR /ipxe
 
 # Copy stuff needed to compile iPXE
+RUN git clone https://github.com/ipxe/ipxe.git && \
+    mv ipxe/src/ . && \
+    rm -rf ipxe/
+
 COPY src src
 COPY utils/make.sh utils/
 COPY boot/boot.ipxe boot/
