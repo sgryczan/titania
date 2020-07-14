@@ -43,7 +43,6 @@ RUN git clone https://github.com/ipxe/ipxe.git && \
     mv ipxe/src/ . && \
     rm -rf ipxe/
 
-COPY src src
 COPY utils/make.sh utils/
 COPY boot/boot.ipxe boot/
 
