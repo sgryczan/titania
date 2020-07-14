@@ -19,7 +19,7 @@ jobs:
           dockerfile: Dockerfile
           tags: "latest,${{ env.RELEASE_VERSION }}"
       - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@maste
+        uses: elgohr/Publish-Docker-Github-Action@master
         with:
           name: sgryczan/titania-api
           username: ${{ secrets.DOCKER_HUB_USER }}
