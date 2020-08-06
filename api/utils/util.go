@@ -143,3 +143,60 @@ func DeleteHostFile(mac string) error {
 	}
 	return nil
 }
+
+// UpdateBootedHostInventory writes/appends a machine boot event to file
+func UpdateBootedHostInventory(m *models.MachineEvent) error {
+	inv := &models.BootedHostsInventory{}
+	// check if file exists
+	if _, err := os.Stat("inventory/" + m.MacAddr); err == nil {
+		data, err := ReadBootedHostsInventoryFromFile("inventory/" + m.MacAddr)
+		if err != nil {
+			log.Print(err.Error())
+			return err
+		}
+		inv.Events = data.Events
+		inv.Events = append(inv.Events, *m)
+	}
+	file, err := json.MarshalIndent(inv, "", "  ")
+	if err != nil {
+		log.Print(err.Error())
+		return err
+	}
+	err = ioutil.WriteFile("inventory/"+m.MacAddr, file, 0644)
+	return err
+}
+
+// ReadBootedHostsInventoryFromFile reads machine events from file..crazy
+func ReadBootedHostsInventoryFromFile(filename string) (*models.BootedHostsInventory, error) {
+	inv := &models.BootedHostsInventory{}
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Print(err.Error())
+		return nil, err
+	}
+
+	err = json.Unmarshal([]byte(file), &inv)
+	if err != nil {
+		log.Print(err.Error())
+		return nil, err
+	}
+
+	return inv, nil
+}
+
+//ListInventoryFiles lists all hosts in booted inventory
+func ListInventoryFiles() ([]string, error) {
+	dir := "inventory/"
+	files := []string{}
+
+	children, err := ioutil.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range children {
+		files = append(files, file.Name())
+	}
+	log.Printf("[ListHostFiles] - %s", files)
+	return files, nil
+}
