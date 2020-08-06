@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/sgryczan/titania/api/models"
@@ -33,16 +34,16 @@ func AddBootedHostHandler(w http.ResponseWriter, r *http.Request) {
 	//   '200':
 	//     description: Machine added successfully
 	//     type: string
-	machine := &models.MachineEvent{}
-	err := json.NewDecoder(r.Body).Decode(&machine)
-	machine.Date = time.Now().Format(time.RFC3339)
+	event := &models.MachineEvent{}
+	err := json.NewDecoder(r.Body).Decode(&event)
+	event.Date = time.Now().Format(time.RFC3339)
 	if !(utils.ValidateJSON(err, w)) {
 		return
 	}
 
 	//bootedHosts = append(bootedHosts, *machine)
 	// Write host to file
-	err = utils.UpdateBootedHostInventory(machine)
+	err = utils.UpdateBootedHostInventory(event)
 	if err != nil {
 		log.Print(err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -50,7 +51,7 @@ func AddBootedHostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Added event type to booted hosts inventory: %s\n", machine.Type)
+	fmt.Fprintf(w, "Added event type to booted hosts inventory: %s\n", event.Type)
 }
 
 // ListBootedHostsHandler lists the inventory of booted hosts
@@ -94,7 +95,6 @@ func GetHostEventsHandler(w http.ResponseWriter, r *http.Request) {
 	//   description: MAC of host config to be returned.
 	//   required: true
 	//   type: string
-	// parameters:
 	// - name: maxResults
 	//   in: query
 	//   description: Max number of events to be returned
@@ -110,12 +110,16 @@ func GetHostEventsHandler(w http.ResponseWriter, r *http.Request) {
 	//     description: MAC configuration not found
 	//     type: string
 
-	key := r.FormValue("key")
+	q := r.FormValue("maxResults")
+	results, _ := strconv.Atoi(q)
+	if results == 0 {
+		results = 1
+	}
 
 	mac := filepath.Base(r.URL.Path)
 	fmt.Printf("GET /v1/inventory/%s\n", mac)
 
-	events, err := utils.ReadBootedHostsInventoryFromFile("inventory/" + mac)
+	hostInv, err := utils.ReadBootedHostsInventoryFromFile("inventory/" + mac)
 	if err != nil {
 		log.Print(err.Error())
 		w.WriteHeader(http.StatusNotFound)
@@ -123,9 +127,14 @@ func GetHostEventsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	events.Events = events.E
+	events := hostInv.Events
 
-	res, err := json.MarshalIndent(events, "", "  ")
+	if len(hostInv.Events) >= results {
+		events = hostInv.Events[len(hostInv.Events)-results:]
+	}
+
+	hostInv.Events = events
+	res, _ := json.MarshalIndent(events, "", "  ")
 
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", res)

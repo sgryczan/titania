@@ -49,6 +49,8 @@ func main() {
 	r.HandleFunc("/hosts", handlers.ListHandler).Methods("GET")
 	r.HandleFunc("/v1/inventory", handlers.AddBootedHostHandler).Methods("POST")
 	r.HandleFunc("/v1/inventory", handlers.ListBootedHostsHandler).Methods("GET")
+	r.HandleFunc("/v1/inventory/{mac}", handlers.GetHostEventsHandler).Methods("GET")
+	r.HandleFunc("/v1/inventory/{mac}", handlers.GetHostEventsHandler).Methods("GET").Queries("maxResults", "{[0-9]*?}")
 
 	sh := http.StripPrefix("/api",
 		http.FileServer(http.Dir("./swaggerui/")))

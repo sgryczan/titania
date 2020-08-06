@@ -147,6 +147,7 @@ func DeleteHostFile(mac string) error {
 // UpdateBootedHostInventory writes/appends a machine boot event to file
 func UpdateBootedHostInventory(m *models.MachineEvent) error {
 	inv := &models.BootedHostsInventory{}
+	inv.Events = append(inv.Events, *m)
 	// check if file exists
 	if _, err := os.Stat("inventory/" + m.MacAddr); err == nil {
 		data, err := ReadBootedHostsInventoryFromFile("inventory/" + m.MacAddr)

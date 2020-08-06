@@ -37,7 +37,7 @@ type BootedHostsInventory struct {
 // swagger:model
 type MachineEvent struct {
 	// required: true
-	// example: AA:BB:CC:DD:EE:FF
+	// example: 1A:2B:3C:4D:5E:6F
 	MacAddr string `json:"mac"`
 	// required: true
 	// example: iPXE
