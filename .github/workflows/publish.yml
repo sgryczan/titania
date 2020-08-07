@@ -1,8 +1,5 @@
 name: Publish Images
 on:
-  push:
-    branches:
-    - master
   release:
     types: [published, created, edited, released, prereleased]
 
