@@ -24,6 +24,8 @@ jobs:
           tags: "latest,${{ env.RELEASE_VERSION }}"
       - name: Build and Publish - API
         uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          VERSION: ${{ env.RELEASE_VERSION }}"
         with:
           name: sgryczan/titania-api
           username: ${{ secrets.DOCKER_HUB_USER }}
@@ -31,4 +33,5 @@ jobs:
           registry: docker.io
           workdir: api/
           dockerfile: Dockerfile
+          buildargs: VERSION
           tags: "latest,${{ env.RELEASE_VERSION }}"
