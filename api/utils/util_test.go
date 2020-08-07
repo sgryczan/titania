@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -36,6 +37,15 @@ var exampleHost = models.Host{
 	},
 }
 
+var exampleEvent = models.MachineEvent{
+	Details: map[string]interface{}{
+		"arch":    "IA32",
+		"macAddr": "1a:2b:3c:4d:5e:6f",
+	},
+	MacAddr: "1A:2B:3C:4D:5E:6F",
+	Type:    "iPXE",
+}
+
 func TestWriteHostToFile(t *testing.T) {
 	targetDir := "inv/"
 	err := os.Mkdir(targetDir, 0777)
@@ -65,6 +75,37 @@ func TestWriteHostToFile(t *testing.T) {
 
 }
 
+func TestUpdateBootedHostInventory(t *testing.T) {
+	targetDir := "inventory/"
+	err := os.Mkdir(targetDir, 0777)
+	defer os.RemoveAll(targetDir)
+
+	event := exampleEvent
+
+	err = UpdateBootedHostInventory(&event)
+
+	file, err := ioutil.ReadFile(targetDir + "/" + event.MacAddr)
+
+	if err != nil {
+		t.Fatalf("Failed to write file: %v", err)
+	}
+
+	// We read the file. Does it contain the expected contents?
+	fileInv := models.BootedHostsInventory{}
+	err = json.Unmarshal([]byte(file), &fileInv)
+
+	es := models.BootedHostsInventory{}
+	es.Events = append(es.Events, exampleEvent)
+	if err != nil {
+		t.Fatalf("Failed to unmarshal file contents into HostConfig: %v", err)
+	}
+
+	if !(cmp.Equal(fileInv, es)) {
+		t.Fatalf("Structs are not equal. Got %v expected %v", fileInv, es)
+	}
+
+}
+
 func TestReadHostFromFile(t *testing.T) {
 	targetDir := "inv/"
 	err := os.Mkdir(targetDir, 0777)
@@ -88,6 +129,31 @@ func TestReadHostFromFile(t *testing.T) {
 	}
 }
 
+func TestReadBootedHostsInventoryFromFile(t *testing.T) {
+	targetDir := "inventory/"
+	err := os.Mkdir(targetDir, 0777)
+	defer os.RemoveAll(targetDir)
+	if err != nil {
+		t.Fatalf("failed to create inventory directory: %v", err)
+	}
+
+	err = UpdateBootedHostInventory(&exampleEvent)
+	if err != nil {
+		t.Fatalf("failed to write host to file: %v", err)
+	}
+
+	testHost, err := ReadBootedHostsInventoryFromFile(fmt.Sprintf("%s/%s", targetDir, exampleEvent.MacAddr))
+	if err != nil {
+		t.Fatalf("failed to read host from file: %v", err)
+	}
+
+	es := models.BootedHostsInventory{}
+	es.Events = append(es.Events, exampleEvent)
+	if !(cmp.Equal(*testHost, es)) {
+		t.Fatalf("Structs are not equal. Got diff \n%v", cmp.Diff(*testHost, es))
+	}
+}
+
 func TestListHostFiles(t *testing.T) {
 	targetDir := "inv/"
 	err := os.Mkdir(targetDir, 0777)
@@ -103,6 +169,29 @@ func TestListHostFiles(t *testing.T) {
 
 	expected := []string{exampleHost.MacAddr}
 	files, err := ListHostFiles()
+	if err != nil {
+		t.Fatalf("failed to list host files: %v", err)
+	}
+	if !(cmp.Equal(expected, files)) {
+		t.Fatalf("Slices are not equal. Got %v expected %v", files, expected)
+	}
+}
+
+func TestListInventoryFiles(t *testing.T) {
+	targetDir := "inventory/"
+	err := os.Mkdir(targetDir, 0777)
+	defer os.RemoveAll(targetDir)
+	if err != nil {
+		t.Fatalf("failed to create inventory directory: %v", err)
+	}
+
+	err = UpdateBootedHostInventory(&exampleEvent)
+	if err != nil {
+		t.Fatalf("failed to write host to file: %v", err)
+	}
+
+	expected := []string{exampleEvent.MacAddr}
+	files, err := ListInventoryFiles()
 	if err != nil {
 		t.Fatalf("failed to list host files: %v", err)
 	}
@@ -131,6 +220,34 @@ func TestDeleteHostFile(t *testing.T) {
 
 	expected := []string{}
 	files, err := ListHostFiles()
+	if err != nil {
+		t.Fatalf("failed to list host files: %v", err)
+	}
+	if !(cmp.Equal(expected, files)) {
+		t.Fatalf("Slices are not equal. Got %v expected %v", files, expected)
+	}
+}
+
+func TestDeleteInventoryFile(t *testing.T) {
+	targetDir := "inventory/"
+	err := os.Mkdir(targetDir, 0777)
+	defer os.RemoveAll(targetDir)
+	if err != nil {
+		t.Fatalf("failed to create inventory directory: %v", err)
+	}
+
+	err = UpdateBootedHostInventory(&exampleEvent)
+	if err != nil {
+		t.Fatalf("failed to write host to file: %v", err)
+	}
+
+	err = DeleteInventoryFile(exampleEvent.MacAddr)
+	if err != nil {
+		t.Fatalf("failed to delete host file: %v", err)
+	}
+
+	expected := []string{}
+	files, err := ListInventoryFiles()
 	if err != nil {
 		t.Fatalf("failed to list host files: %v", err)
 	}
