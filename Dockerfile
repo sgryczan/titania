@@ -12,7 +12,6 @@ WORKDIR $GOPATH/src/github.com/sgryczan
 RUN git clone https://github.com/sgryczan/netboot
 
 RUN cd $GOPATH/src/github.com/sgryczan/netboot && \
-    git checkout inventory_callback && \
     GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /go/bin/pixiecore ./cmd/pixiecore
 
 ADD utils/get-ip.go .

@@ -48,3 +48,28 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "%s", res)
 }
+
+// ListBootedHostsHandler lists the inventory of booted hosts
+func ListBootedHostsHandler(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /v1/inventory Inventory Inventory
+	//
+	// Lists booted host inventory
+	// ---
+	// consumes:
+	// - application/json
+	// produces:
+	// - application/json
+	// responses:
+	//   '200':
+	//     description: Machine added successfully
+	//     type: string
+	w.WriteHeader(http.StatusOK)
+	res, err := utils.ListInventoryFiles()
+	if err != nil {
+		log.Print(err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	hosts, _ := json.MarshalIndent(res, "", "  ")
+	fmt.Fprintf(w, "%s", hosts)
+}

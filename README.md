@@ -39,7 +39,7 @@ docker-compose up
 ### Example - Run in API Mode, forwarding boot requests to an external server (e.g http://10.117.30.30)
 
 ```
-docker run -ti --rm --net=host sf-artifactory.solidfire.net:9004/pixiecore-dynamic-rom:0.0.1 \
+docker run -ti --rm --net=host sgryczan/titania-boot:0.1.0 \
     api \
     -d \
     --ipxe-ipxe /ipxe/src/bin/undionly.kpxe \
@@ -50,7 +50,7 @@ docker run -ti --rm --net=host sf-artifactory.solidfire.net:9004/pixiecore-dynam
 
 ### Example - Run in static mode, boot all hosts into CentOS
 ```
-docker run -ti --rm --net=host sf-artifactory.solidfire.net:9004/pixiecore-dynamic-rom:0.0.10  \
+docker run -ti --rm --net=host sgryczan/titania-boot:0.1.0  \
     boot \
     -d \
     /ipxe/boot/vmlinuz \
