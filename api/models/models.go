@@ -27,9 +27,18 @@ type Inventory struct {
 	Hosts []string `json:"hosts"`
 }
 
-// Machine represents a booted host
+// BootedHostsInventory represents a collection of events for a given host (MACAddr)
+type BootedHostsInventory struct {
+	MacAddr string         `json:"mac"`
+	Events  []MachineEvent `json:"events"`
+}
+
+// MachineEvent represents a booted host
 // swagger:model
-type Machine struct {
+type MachineEvent struct {
+	// required: true
+	// example: 1A:2B:3C:4D:5E:6F
+	MacAddr string `json:"mac"`
 	// required: true
 	// example: iPXE
 	Type string `json:"type"`
@@ -38,4 +47,14 @@ type Machine struct {
 	Date string `json:"date"`
 	// example: {"macAddr": "1a:2b:3c:4d:5e:6f", "arch": "IA32"}
 	Details interface{} `json:"details"`
+}
+
+// HostEventsRequest does things
+type HostEventsRequest struct {
+	// required: true
+	// example: AA:BB:CC:DD:EE:FF
+	MacAddr string `json:"mac"`
+	// required: false
+	// example: 5
+	MaxHistory int `json:"max-history"`
 }
