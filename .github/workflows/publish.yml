@@ -1,5 +1,4 @@
 name: Publish Images
-
 on:
   release:
     types: [published, created, edited, released, prereleased]
