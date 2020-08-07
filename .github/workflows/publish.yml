@@ -25,7 +25,7 @@ jobs:
       - name: Build and Publish - API
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          VERSION: ${{ env.RELEASE_VERSION }}"
+          VERSION: ${{ env.RELEASE_VERSION }}
         with:
           name: sgryczan/titania-api
           username: ${{ secrets.DOCKER_HUB_USER }}
