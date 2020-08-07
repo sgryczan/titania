@@ -144,6 +144,19 @@ func DeleteHostFile(mac string) error {
 	return nil
 }
 
+// DeleteInventoryFile deletes an inventory file for target MAC
+func DeleteInventoryFile(mac string) error {
+	var err error
+	dir := "inventory/"
+
+	log.Printf("[DeleteInventoryFile] - Deleting %s", mac)
+	err = os.Remove(dir + mac)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpdateBootedHostInventory writes/appends a machine boot event to file
 func UpdateBootedHostInventory(m *models.MachineEvent) error {
 	inv := &models.BootedHostsInventory{}
