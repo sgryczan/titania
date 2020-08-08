@@ -1,15 +1,15 @@
 terraform {
   backend "s3" {
-    region = "us-west-2"
-    bucket = "netapp-sre-tf"
-    key = "infra/k8s/hg-eldo/terraform.tfstate"
+    region = "region"
+    bucket = "my-bucket"
+    key = "infra/k8s/hg-pxe/terraform.tfstate"
     #encrypt = true
   }
 }
 
 locals {
-  s3_bucket             = "netapp-sre-tf"
-  s3_project_key        = "hg-eldo"
+  s3_bucket             = "my-bucket"
+  s3_project_key        = "hg-pxe"
   
   vm_name_prefix        = "hg-pxe"
 
