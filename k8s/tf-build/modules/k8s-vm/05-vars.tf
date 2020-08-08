@@ -26,8 +26,6 @@ variable "datastore_name" {
 
 variable "datacenter_name" {}
 
-variable "network_name" {}
-
 variable "resource_pool_name" {
     default = "Resources"
 }
