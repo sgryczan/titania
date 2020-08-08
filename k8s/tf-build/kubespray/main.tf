@@ -1,27 +1,3 @@
-terraform {
-  backend "s3" {
-    region = "region"
-    bucket = "my-bucket"
-    key = "infra/k8s/hg-pxe/terraform.tfstate"
-    #encrypt = true
-  }
-}
-
-locals {
-  s3_bucket             = "my-bucket"
-  s3_project_key        = "hg-pxe"
-  
-  vm_name_prefix        = "hg-pxe"
-
-  num_masters           = "3"
-
-  num_cpus              = "2"
-  memoryMB              = "2048"
-
-  num_cpus_master       = "4"
-  memoryMB_master       = "4096"
-}
-
 
 module "infra" {
     source =  "../modules/k8s-vm"
@@ -43,7 +19,7 @@ module "infra" {
 
     // /${DATACENTER}/host/${CLUSTER}/Resources/${RESOURCE_POOL}
     resource_pool_name          = var.resource_pool_name
-    folder                      = "${var.folder}/${local.vm_name_prefix}"
+    folder                      = "${var.folder}/${var.vm_name_prefix}"
     datacenter_name             = var.datacenter_name
     vm_template_name            = var.vm_template_name
 }
@@ -51,11 +27,11 @@ module "infra" {
 module "kubespray" {
   source = "../modules/kubespray"
   
-  s3_bucket = "${local.s3_bucket}"
-  s3_key = "infra/k8s/${local.s3_project_key == "" ? local.vm_name_prefix : local.s3_project_key}/terraform.tfstate"
+  s3_bucket = "${var.s3_bucket}"
+  s3_key = var.s3_key
   
-  ansible_user        = "${local.ansible_user}"
-  ansible_password    = "${local.ansible_password}"
+  ansible_user        = "${var.ansible_user}"
+  ansible_password    = "${var.ansible_password}"
 
   package_manager = "yum"
 
@@ -81,33 +57,33 @@ module "kubespray" {
 
   vsphere_storage = [
     "cloud_provider=vsphere",
-    "vsphere_vcenter_ip=${local.vsphere_server}",
+    "vsphere_vcenter_ip=${var.vsphere_server}",
     "vsphere_vcenter_port=443",
     "vsphere_insecure=1",
-    "vsphere_user=${local.vsphere_user}",
-    "vsphere_password=${local.vsphere_password}",
+    "vsphere_user=${var.vsphere_user}",
+    "vsphere_password=${var.vsphere_password}",
     "vsphere_datacenter=${var.datacenter_name}",
     "vsphere_datastore=${var.datastore_name}",
-    "vsphere_working_dir=${var.folder}/${local.vm_name_prefix}",
+    "vsphere_working_dir=${var.folder}/${var.vm_name_prefix}",
     "vsphere_scsi_controller_type=pvscsi",
-    "vsphere_resource_pool=/NetApp-HCI-Datacenter-01/host/NetApp-HCI-Cluster-${local.environment == "Production" ? "01" : "02"}/Resources/ART:Appliance/SRE",
+    "vsphere_resource_pool=${var.resource_pool_name}",
   ]
 }
 
 module "trident-nfs" {
   source = "../modules/trident-nfs"
 
-  s3_bucket = "${local.s3_bucket}"
-  s3_key = "infra/k8s/${local.s3_project_key == "" ? local.vm_name_prefix : local.s3_project_key}/terraform.tfstate"
+  s3_bucket = "${var.s3_bucket}"
+  s3_key = "${var.s3_key}"
 
-  username          = "${local.trident_user}"
-  password          = "${local.trident_password}"
-  managementLIF     = "${local.trident_managementLIF}"
-  dataLIF           = "${local.trident_dataLIF}"
-  svm               = "${local.trident_svm}"
+  username          = "${var.trident_user}"
+  password          = "${var.trident_password}"
+  managementLIF     = "${var.trident_managementLIF}"
+  dataLIF           = "${var.trident_dataLIF}"
+  svm               = "${var.trident_svm}"
 
-  ansible_user        = "${local.ansible_user}"
-  ansible_password    = "${local.ansible_password}"
+  ansible_user        = "${var.ansible_user}"
+  ansible_password    = "${var.ansible_password}"
 
   inventory_file_contents = "${module.kubespray.inventory}"
   dependency = "${module.kubespray.inventory_object_key}"
