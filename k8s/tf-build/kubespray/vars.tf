@@ -29,4 +29,4 @@ variable "trident_user" {}
 variable "trident_password" {}
 variable "trident_managementLIF"
 variable "trident_dataLIF" {}
-variable "trident_svm"
+variable "trident_svm" {}
