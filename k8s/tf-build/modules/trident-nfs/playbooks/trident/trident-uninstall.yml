@@ -1,0 +1,39 @@
+---
+# Download trident binary and install trident pod
+
+- hosts: 'kube-master'
+  vars:
+    trident_version: 19.07.0
+    trident_installer_url: https://github.com/NetApp/trident/releases/download/v{{ trident_version }}/trident-installer-{{ trident_version }}.tar.gz
+    trident_installer_path: trident-installer-{{ trident_version }}.tar.gz
+    namespace: trident
+    deploy:    trident-csi
+  remote_user: solidfire
+  become: true
+  run_once: true
+
+  tasks:
+
+  - name: Export Kubeconfig
+    raw: test $KUBECONFIG = /root/.kube/config || export KUBECONFIG=/root/.kube/config
+    register: output
+    changed_when: output.stdout != ""
+
+  - name: Check for Existing Trident Deployments
+    shell: "kubectl get deployment {{ deploy }} -n {{ namespace }} --no-headers=1"
+    register: check_trident_ds
+    failed_when: false
+  - debug: var=check_trident_ds.stdout_lines
+  
+  - name: Uninstall trident
+    raw: "trident-installer/tridentctl uninstall -n {{ namespace }}"
+    register: uninstall_trident
+    when: check_trident_ds.stdout_lines | length > 0  # Only run this if no existing deployments are running
+  - debug: 
+      var: uninstall_trident
+
+
+  
+
+
+

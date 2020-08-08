@@ -1,0 +1,122 @@
+---
+# Install requirements for NetApp Trident Storage Orchestrator
+
+- hosts: 'kube-master,kube-node'
+  vars:
+    trident_installer: https://github.com/NetApp/trident/releases/download/v19.07.0/trident-installer-19.07.0.tar.gz
+    namespace: trident
+    deploy:    trident
+  remote_user: solidfire
+  become: true
+
+  tasks:
+
+  - name: Update apt cache (DEBIAN)
+    apt: 
+      update_cache: yes
+    register: out
+    when: ansible_os_family == 'Debian'
+
+  - debug: var=out
+
+  - name: Install apt packages. (DEBIAN)
+    package: 
+      name:   "{{ item }}"
+    with_items:
+      - nfs-common
+      - open-iscsi
+      - lsscsi
+      - sg3-utils
+      - multipath-tools
+      - scsitools
+      - wget
+    when: ansible_os_family == 'Debian'
+
+  - debug: var=out
+
+  - name: Install yum packages. (CENTOS)
+    package: 
+      name:   "{{ item }}"
+    with_items:
+      - lsscsi
+      - iscsi-initiator-utils
+      - sg3_utils
+      - device-mapper-multipath
+      - wget
+      - nfs-utils
+    when: ansible_os_family == 'CentOS'
+  
+  - name: Install yum packages. (REDHAT)
+    package: 
+      name:   "{{ item }}"
+    with_items:
+      - lsscsi
+      - iscsi-initiator-utils
+      - sg3_utils
+      - wget
+      - nfs-utils
+    when: ansible_os_family == 'RedHat'
+
+  - name: Start service rpc-statd (DEBIAN)
+    systemd: 
+      name:     rpc-statd
+      enabled:  yes
+      state:    started
+    register: out
+    when: ansible_os_family == 'Debian'
+
+  - debug: var=out
+
+  - name: Enable multipathing (DEBIAN)
+    copy:
+      src: multipath.conf
+      dest: /etc/multipath.conf
+      owner: root
+      group: root
+      mode: 0644
+    when: ansible_os_family == 'Debian'
+
+  - name: Start service multipath-tools.service (DEBIAN)
+    systemd:
+      name:     multipath-tools.service
+      enabled:  yes
+      state:    started
+    register: out
+    when: ansible_os_family == 'Debian'
+
+  - debug: var=out
+
+  - name: Start service open-iscsi.service (DEBIAN)
+    systemd:
+      name:     open-iscsi.service
+      enabled:  yes
+      state:    started
+    register: out
+    when: ansible_os_family == 'Debian'
+  - debug: var=out
+
+  - name: Enable Multipathing
+    raw: mpathconf --enable --with_multipathd y
+    register: out
+    when: ansible_os_family == 'CentOS'
+  - debug: var=out
+
+  - name: Start service open-iscsi.service (CENTOS)
+    systemd:
+      name:     iscsid.service
+      enabled:  yes
+      state:    started
+    register: out
+    when: ansible_os_family == 'CentOS'
+  - debug: var=out
+
+  - name: Start service open-iscsi.service (CENTOS)
+    systemd:
+      name:     multipathd.service
+      enabled:  yes
+      state:    started
+    register: out
+    when: ansible_os_family == 'CentOS'
+  - debug: var=out
+
+

@@ -1,0 +1,92 @@
+---
+# Download trident binary and install trident pod
+
+- hosts: 'kube-master'
+  vars:
+    trident_version: 19.10.0
+    trident_installer_url: https://github.com/NetApp/trident/releases/download/v{{ trident_version }}/trident-installer-{{ trident_version }}.tar.gz
+    trident_installer_path: trident-installer-{{ trident_version }}.tar.gz
+    namespace: trident
+    deploy:    trident-csi
+    storageclass: solidfire-nfs
+  remote_user: solidfire
+  become: true
+  run_once: true
+
+  tasks:
+
+  - name: Export Kubeconfig
+    raw: export KUBECONFIG=/etc/kubernetes/admin.conf
+    register: output
+    changed_when: output.stdout != ""
+
+  - name: Check for Existing Trident Deployments
+    shell: "/usr/local/bin/kubectl get deployment {{ deploy }} -n {{ namespace }} --no-headers=1"
+    register: check_trident_ds
+    failed_when: '"IgnoreME" in check_trident_ds.stderr_lines'
+  - debug: 
+      var: check_trident_ds.stdout_lines
+  
+  - name: Pull release package
+    raw: "wget {{ trident_installer_url }} && tar xf {{ trident_installer_path }}"
+    register: wget
+  - debug: 
+      var: wget
+
+  - name: Unzip package
+    raw: "tar xf {{ trident_installer_path }}"
+    register: unzip_package
+  - debug: 
+      var: unzip_package
+
+
+  - name: Install trident
+    raw: "export PATH=$PATH:/usr/local/bin && trident-installer/tridentctl install -n {{ namespace }}"
+    register: install_trident
+    when: check_trident_ds.stdout_lines | length == 0 # Only run this if no existing deployments are running
+  - debug: 
+      var: install_trident
+
+  - name: Cleanup installation Tarball
+    file: 
+      path: "{{ trident_installer_path }}"
+      state: absent
+    register: cleanup_tarball
+  - debug: 
+      var: cleanup_tarball
+  
+  - name: Create backend file
+    raw: echo "{{ backend }}" > /etc/kubernetes/backend-nfs.json
+    register: backend_copy
+
+
+  - name: Create backends
+    raw: "export PATH=$PATH:/usr/local/bin && trident-installer/tridentctl -n {{ namespace }} create backend -f /etc/kubernetes/backend-nfs.json"
+    register: create_backends
+ 
+  - debug: 
+      var: create_backends
+
+  - name: Check for Existing Storage Class
+    shell: "/usr/local/bin/kubectl get storageclass {{ storageclass }} --no-headers=1"
+    register: check_storageclass
+    ignore_errors: True
+  - debug: 
+      var: check_storageclass.stdout_lines
+
+  - name: Create storageclass template
+    raw: echo "{{ storageclasses }}" > /etc/kubernetes/storageclasses-nfs.yaml
+    when: check_storageclass.stdout_lines | length == 0 # Only run this if storageclass doesnt exist already
+    register: sc_template_create
+  
+  - debug: 
+      var: sc_template_create
+
+  - name: Create storageclasses
+    raw: "export PATH=$PATH:/usr/local/bin && cat /etc/kubernetes/storageclasses-nfs.yaml | kubectl apply -f -"
+    when: check_storageclass.stdout_lines | length == 0
+    register: sc_create
+  
+  - debug: 
+      var: sc_create
+  
