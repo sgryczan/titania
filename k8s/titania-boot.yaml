@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pixiecore
+  namespace: pxe
+  labels:
+    app: pixiecore
+spec:
+  selector:
+    matchLabels:
+      app: pixiecore
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pixiecore
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      nodeSelector: {}
+      containers:
+      - name: main
+        image: sgryczan/titania-boot:v0.2.0
+        args:
+        - api
+        - -d
+        - --dhcp-no-bind
+        - --ipxe-ipxe
+        - /ipxe/src/bin/undionly.kpxe
+        - --ipxe-efi64
+        - /ipxe/src/bin/undionly.kpxe
+        - --ipxe-bios
+        - /ipxe/src/bin/undionly.kpxe
+        - http://titania-api.pxe.svc.cluster.local
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]

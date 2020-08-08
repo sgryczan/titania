@@ -1,0 +1,86 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: titania-api
+  namespace: pxe
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: titania-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titania-api
+  namespace: pxe
+  labels:
+    app: titania-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: titania-api
+  template:
+    metadata:
+      labels:
+        app: titania-api
+    spec:
+      containers:
+      - name: titania-api
+        image: sgryczan/titania-api:v0.2.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        resources: {}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /go/bin/inv
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: titania-api
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: titania-api
+spec:
+  storageClassName: my-storageclass
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: titania-api
+  namespace: pxe
+spec:
+  rules:
+  - host: 127.0.0.1.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: titania-api
+          servicePort: 80
+        path: /
+---
