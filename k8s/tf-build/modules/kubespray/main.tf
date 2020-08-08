@@ -164,9 +164,6 @@ EOF
   }
 }
 
-provider "aws" {
-  region = "${var.s3_region}"
-}
 
 // Copy Artifacts up to S3
 resource "aws_s3_bucket_object" "kubeconfig" {

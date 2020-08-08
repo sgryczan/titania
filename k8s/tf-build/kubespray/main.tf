@@ -2,6 +2,10 @@ terraform {
     required_version = ">= 0.13.0"
 }
 
+provider "aws" {
+  region = "${var.s3_region}"
+  alias = "kubespray_aws"
+}
 
 module "infra" {
     source =  "../modules/k8s-vm"
@@ -31,6 +35,9 @@ module "infra" {
 module "kubespray" {
   source = "../modules/kubespray"
   depends_on = [module.infra]
+  providers = {
+      aws = "kubespray_aws"
+  }
   
   s3_bucket = "${var.s3_bucket}"
   s3_key = var.s3_key
@@ -78,6 +85,9 @@ module "kubespray" {
 module "trident-nfs" {
   source = "../modules/trident-nfs"
   depends_on = [module.kubespray]
+  providers = {
+      aws = "kubespray_aws"
+  }
 
   s3_bucket = "${var.s3_bucket}"
   s3_key = "${var.s3_key}"

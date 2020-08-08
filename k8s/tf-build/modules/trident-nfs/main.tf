@@ -67,11 +67,6 @@ EOF
   }
 }
 
-### S3 
-
-provider "aws" {
-  region = "${var.s3_region}"
-}
 
 data "terraform_remote_state" "self" {
     backend = "s3"
