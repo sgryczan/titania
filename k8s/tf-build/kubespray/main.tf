@@ -4,7 +4,7 @@ terraform {
 
 provider "aws" {
   region = "${var.s3_region}"
-  alias = "kubespray_aws"
+  alias = "k8s"
 }
 
 module "infra" {
@@ -36,7 +36,7 @@ module "kubespray" {
   source = "../modules/kubespray"
   depends_on = [module.infra]
   providers = {
-      aws = "kubespray_aws"
+      aws = "aws.k8s"
   }
   
   s3_bucket = "${var.s3_bucket}"
@@ -86,7 +86,7 @@ module "trident-nfs" {
   source = "../modules/trident-nfs"
   depends_on = [module.kubespray]
   providers = {
-      aws = "kubespray_aws"
+      aws = "aws.k8s"
   }
 
   s3_bucket = "${var.s3_bucket}"
