@@ -27,6 +27,6 @@ variable "package_manager" {
 variable "kubespray_force_build" {}
 variable "trident_user" {}
 variable "trident_password" {}
-variable "trident_managementLIF"
+variable "trident_managementLIF" {}
 variable "trident_dataLIF" {}
 variable "trident_svm" {}
