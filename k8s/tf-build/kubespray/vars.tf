@@ -1,3 +1,4 @@
+# Infra
 variable "vsphere_user" {}
 variable "vsphere_password" {}
 variable "vsphere_server" {}
@@ -13,7 +14,7 @@ variable "folder" {}
 variable "datacenter_name" {}
 variable "vm_template_name" {}
 
-
+# Kubespray
 variable "s3_bucket" {}
 variable "s3_key" {}
 variable "ansible_user" {}
@@ -22,8 +23,8 @@ variable "package_manager" {
     default = "yum"
 }
 
+# Trident
 variable "kubespray_force_build" {}
-
 variable "trident_user" {}
 variable "trident_password" {}
 variable "trident_managementLIF"

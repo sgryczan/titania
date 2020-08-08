@@ -1,3 +1,7 @@
+terraform {
+    required_version = ">= 0.13.0"
+}
+
 
 module "infra" {
     source =  "../modules/k8s-vm"
@@ -26,6 +30,7 @@ module "infra" {
 
 module "kubespray" {
   source = "../modules/kubespray"
+  depends_on = [module.infra]
   
   s3_bucket = "${var.s3_bucket}"
   s3_key = var.s3_key
@@ -72,6 +77,7 @@ module "kubespray" {
 
 module "trident-nfs" {
   source = "../modules/trident-nfs"
+  depends_on = [module.kubespray]
 
   s3_bucket = "${var.s3_bucket}"
   s3_key = "${var.s3_key}"
