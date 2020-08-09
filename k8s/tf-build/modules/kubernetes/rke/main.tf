@@ -20,6 +20,10 @@ resource "rke_cluster" "cluster" {
       url = r["url"]
       is_default = r["is_default"]
     }]
+    content {
+      url = private_registries.value.url
+      is_default = private_registries.value.is_default
+    }
   }
 
   dynamic "nodes" {
