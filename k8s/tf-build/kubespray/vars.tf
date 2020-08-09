@@ -6,7 +6,7 @@ variable "num_masters" {}
 variable "vm_name_prefix" {}
 variable "num_cpus" {}
 variable "memoryMB" {}
-variable "master_node_network_name" {}
+variable "master_nodes_network_name" {}
 variable "worker_node_networks" {}
 variable "datastore_cluster_name" {}
 variable "resource_pool_name" {}
