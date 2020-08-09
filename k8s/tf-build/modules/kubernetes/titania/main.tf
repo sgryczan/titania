@@ -139,14 +139,14 @@ resource "kubernetes_deployment" "titania-api" {
           liveness_probe {
             http_get {
               path = "/about"
-              port = 80
+              port = "http"
             }
           }
 
           readiness_probe {
             http_get {
               path = "/about"
-              port = 80
+              port = "http"
             }
           }
         }
