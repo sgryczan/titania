@@ -27,7 +27,7 @@ module "infra" {
 
     // /${DATACENTER}/host/${CLUSTER}/Resources/${RESOURCE_POOL}
     resource_pool_name          = var.resource_pool_name
-    folder                      = "${var.folder}"
+    folder                      = "${var.folder}/${var.vm_name_prefix}"
     datacenter_name             = var.datacenter_name
     vm_template_name            = var.vm_template_name
 }
