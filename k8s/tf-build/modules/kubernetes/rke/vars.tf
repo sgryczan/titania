@@ -23,3 +23,18 @@ variable "worker_nodes" {
   type    = list
   default = []
 }
+
+
+/* Example: 
+
+private_registries = [{
+  url = "my.registry.com"
+  is_default  = true
+}] 
+
+*/
+
+variable "private_registries" {
+  type = list
+  default = []
+}
