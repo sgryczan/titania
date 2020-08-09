@@ -15,6 +15,10 @@ resource "rke_cluster" "cluster" {
   # 2 minute timeout specifically for rke-network-plugin-deploy-job but will apply to any addons
   addon_job_timeout = 120
 
+  network {
+    plugin = var.network_plugin
+  }
+
   dynamic "private_registries" {
     for_each = [for r in var.private_registries : {
       url = r["url"]

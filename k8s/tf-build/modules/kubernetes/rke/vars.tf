@@ -38,3 +38,8 @@ variable "private_registries" {
   type = list
   default = []
 }
+
+variable "network_plugin" {
+  type = string
+  default = "canal"
+}
