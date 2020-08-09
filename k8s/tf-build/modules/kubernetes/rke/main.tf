@@ -2,6 +2,15 @@ locals {
   deliverables_path  = var.deliverables_path == "" ? "./deliverables" : var.deliverables_path
 }
 
+terraform {
+  required_providers {
+    rke = {
+      source = "rancher/rke"
+      version = "1.0.1"
+    }
+  }
+}
+
 resource "rke_cluster" "cluster" {
   # 2 minute timeout specifically for rke-network-plugin-deploy-job but will apply to any addons
   addon_job_timeout = 120
