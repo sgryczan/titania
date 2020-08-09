@@ -17,6 +17,7 @@ variable "vm_template_name" {}
 # Kubespray
 variable "s3_bucket" {}
 variable "s3_key" {}
+variable "s3_region" {}
 variable "ansible_user" {}
 variable "ansible_password" {}
 variable "package_manager" {
