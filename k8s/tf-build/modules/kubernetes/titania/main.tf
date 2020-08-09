@@ -51,15 +51,15 @@ resource "kubernetes_daemonset" "titania-boot" {
           image = join("", "sgryczan/titania:", var.image_tag)
           name  = "titania-boot"
           args = [
-            "api"
-            "-d"
-            "--dhcp-no-bind"
-            "--ipxe-ipxe"
-            "/ipxe/src/bin/undionly.kpxe"
-            "--ipxe-efi64"
-            "/ipxe/src/bin/undionly.kpxe"
-            "--ipxe-bios"
-            "/ipxe/src/bin/undionly.kpxe"
+            "api",
+            "-d",
+            "--dhcp-no-bind",
+            "--ipxe-ipxe",
+            "/ipxe/src/bin/undionly.kpxe",
+            "--ipxe-efi64",
+            "/ipxe/src/bin/undionly.kpxe",
+            "--ipxe-bios",
+            "/ipxe/src/bin/undionly.kpxe",
             "http://titania-api"
           ]
           image_pull_policy = "Always"
