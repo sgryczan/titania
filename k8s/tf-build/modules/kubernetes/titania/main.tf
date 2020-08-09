@@ -53,6 +53,8 @@ resource "kubernetes_daemonset" "titania-boot" {
           args = [
             "api",
             "-d",
+            "-p",
+            var.http_port,
             "--dhcp-no-bind",
             "--ipxe-ipxe",
             "/ipxe/src/bin/undionly.kpxe",

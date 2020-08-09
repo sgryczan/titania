@@ -30,3 +30,8 @@ variable "create_namespace" {
     default = false
 }
 
+variable "http_port" {
+    type = string
+    default = 80
+}
+
