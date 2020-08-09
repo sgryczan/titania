@@ -8,7 +8,9 @@ variable "num_cpus" {}
 variable "memoryMB" {}
 variable "master_nodes_network_name" {}
 variable "worker_node_networks" {}
-variable "datastore_cluster_name" {}
+variable "datastore_cluster_name" {
+    default = ""
+}
 variable "resource_pool_name" {}
 variable "folder" {}
 variable "datacenter_name" {}
@@ -22,6 +24,10 @@ variable "ansible_user" {}
 variable "ansible_password" {}
 variable "package_manager" {
     default = "yum"
+}
+
+variable "datastore_name" {
+  default = ""
 }
 
 # Trident
