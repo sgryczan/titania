@@ -1,3 +1,13 @@
+variable "image_name_boot" {
+    type = string
+    default = "sgryczan/titania-boot"
+}
+
+variable "image_name_api" {
+    type = string
+    default = "sgryczan/titania-api"
+}
+
 variable "image_tag" {
     type = string
     description = "Image tag to use (latest)"
