@@ -80,6 +80,20 @@ module "kubespray" {
     "vsphere_scsi_controller_type=pvscsi",
     "vsphere_resource_pool=${var.resource_pool_name}",
   ]
+
+  kubespray_gcr_image_repo = var.kubespray_gcr_image_repo
+  kubespray_docker_image_repo = var.kubespray_docker_image_repo
+  kubespray_quay_image_repo = var.kubespray_quay_image_repo
+
+  kubespray_kubeadm_download_url = var.kubespray_kubeadm_download_url
+  kubespray_kubelet_download_url = var.kubespray_kubelet_download_url
+  kubespray_kubectl_download_url = var.kubespray_kubectl_download_url
+
+  kubespray_cni_download_url = var.kubespray_cni_download_url
+  kubespray_calicoctl_download_url = var.kubespray_calicoctl_download_url
+
+  kubespray_docker_rh_repo_base_url = var.kubespray_docker_rh_repo_base_url
+  kubespray_docker_rh_repo_gpgkey = var.kubespray_docker_rh_repo_gpgkey
 }
 
 module "trident-nfs" {
