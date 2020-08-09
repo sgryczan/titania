@@ -19,7 +19,7 @@ output "master_nodes" {
     for index, node in vsphere_virtual_machine.master :
     {
       name = node.name
-      ip   = local.num_addresses == 0 ? node.default_ip_address : local.node_ips_no_mask[index]
+      ip   = node.default_ip_address
     }
   ]
 }
@@ -29,7 +29,7 @@ output "worker_nodes" {
     for index, node in vsphere_virtual_machine.worker :
     {
       name = node.name
-      ip   = local.num_addresses == 0 ? node.default_ip_address : local.node_ips_no_mask[index]
+      ip   = node.default_ip_address
     }
   ]
 }
