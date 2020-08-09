@@ -29,8 +29,8 @@ settings = [{
 }] */
 
 variable "settings" {
-    type = list
-    default = []
+    type = map
+    default = {}
 }
 
 variable "wait" {
