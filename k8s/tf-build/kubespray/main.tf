@@ -109,29 +109,6 @@ module "kubespray" {
   kubespray_docker_rh_repo_gpgkey = var.kubespray_docker_rh_repo_gpgkey
 }
 
-module "trident-nfs" {
-  source = "../modules/trident-nfs"
-  depends_on = [module.kubespray]
-  providers = {
-      aws = "aws.k8s"
-  }
-
-  s3_bucket = "${var.s3_bucket}"
-  s3_key = "${var.s3_key}"
-
-  username          = "${var.trident_user}"
-  password          = "${var.trident_password}"
-  managementLIF     = "${var.trident_managementLIF}"
-  dataLIF           = "${var.trident_dataLIF}"
-  svm               = "${var.trident_svm}"
-
-  ansible_user        = "${var.ansible_user}"
-  ansible_password    = "${var.ansible_password}"
-
-  inventory_file_contents = "${module.kubespray.inventory}"
-  dependency = "${module.kubespray.inventory_object_key}"
-}
-
 output "master_ips" {
   value = "${module.infra.master_ips}"
 }
