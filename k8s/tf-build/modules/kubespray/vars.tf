@@ -95,3 +95,45 @@ variable "kubelet_node_config_extra_args" {
 variable "kubelet_max_pods" {
   default = 110
 }
+
+
+variable "kubespray_gcr_image_repo" {
+  default = ""
+}
+
+variable "kubespray_docker_image_repo" {
+  default = ""
+}
+
+variable "kubespray_quay_image_repo" {
+  default = ""
+}
+
+variable "kubespray_kubeadm_download_url" {
+  default = ""
+}
+
+variable "kubespray_kubelet_download_url" {
+  default = ""
+}
+
+variable "kubespray_kubectl_download_url" {
+  default = ""
+}
+
+variable "kubespray_cni_download_url" {
+  default = ""
+}
+
+variable "kubespray_calicoctl_download_url" {
+  default = ""
+}
+
+variable "kubespray_docker_rh_repo_base_url" {
+  default = ""
+}
+
+variable "kubespray_docker_rh_repo_gpgkey" {
+  default = ""
+}
+

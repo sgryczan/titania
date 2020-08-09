@@ -33,6 +33,20 @@ loadbalancer_apiserver_port: 6443
 
 kubeconfig_localhost: true
 
+${gcr_image_repo}
+${docker_image_repo}
+${quay_image_repo}
+
+${kubeadm_download_url}
+${kubectl_download_url}
+${kubelet_download_url}
+
+${cni_download_url}
+${calicoctl_download_url}
+
+${docker_rh_repo_base_url}
+${docker_rh_repo_gpgkey}
+
 ## If loadbalancer_apiserver_healthcheck_port variable defined, enables proxy liveness check for nginx.
 loadbalancer_apiserver_healthcheck_port: 8081
 

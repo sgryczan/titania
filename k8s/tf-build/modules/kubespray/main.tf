@@ -57,6 +57,20 @@ data "template_file" "group_vars_all_yaml" {
   vars = {
     kubelet_node_config_extra_args = "${replace(yamlencode(var.kubelet_node_config_extra_args), "\"", "")}"
     kubelet_max_pods = "${var.kubelet_max_pods}"
+    
+    gcr_image_repo = var.kubespray_gcr_image_repo != "" ? format("%s: %s", "gcr_image_repo", var.kubespray_gcr_image_repo : ""
+    docker_image_repo = var.kubespray_docker_image_repo != "" ? format("%s: %s", "docker_image_repo", var.kubespray_docker_image_repo : ""
+    quay_image_repo = var.kubespray_quay_image_repo != "" ? format("%s: %s", "quay_image_repo", var.kubespray_quay_image_repo : ""
+
+    kubeadm_download_url = var.kubespray_kubeadm_download_url != "" ? format("%s: %s", "kubeadm_download_url", var.kubespray_kubeadm_download_url : ""
+    kubectl_download_url = var.kubespray_kubectl_download_url != "" ? format("%s: %s", "kubectl_download_url", var.kubespray_kubectl_download_url : ""
+    kubelet_download_url = var.kubespray_kubelet_download_url != "" ? format("%s: %s", "kubelet_download_url", var.kubespray_kubelet_download_url : ""
+
+    cni_download_url = var.kubespray_cni_download_url != "" ? format("%s: %s", "cni_download_url", var.kubespray_cni_download_url : ""
+    calicoctl_download_url = var.kubespray_calicoctl_download_url != "" ? format("%s: %s", "calicoctl_download_url", var.kubespray_calicoctl_download_url : ""
+
+    docker_rh_repo_base_url = var.kubespray_docker_rh_repo_base_url != "" ? format("%s: %s", "docker_rh_repo_base_url", var.kubespray_docker_rh_repo_base_url : ""
+    docker_rh_repo_gpgkey = var.kubespray_docker_rh_repo_gpgkey != "" ? format("%s: %s", "docker_rh_repo_gpgkey", var.kubespray_docker_rh_repo_gpgkey : ""
   }
 }
 
