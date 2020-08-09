@@ -109,3 +109,12 @@ variable "rancher_node_template_disk_size" {
   type    = number
   default = 51200
 }
+
+
+variable "export_private_key" {
+  default = false
+}
+
+variable "export_public_key" {
+  default = false
+}

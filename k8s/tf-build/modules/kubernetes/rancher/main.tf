@@ -33,12 +33,16 @@ resource "local_file" "rkeconfig" {
 }
 
 resource "local_file" "ssh_private_key" {
+  count = var.export_private_key ? 1 : 0
+  
   filename        = format("${local.deliverables_path}/id_rsa")
   content         = var.ssh_private_key
   file_permission = "600"
 }
 
 resource "local_file" "ssh_public_key" {
+  count = var.export_public_key ? 1 : 0
+
   filename        = format("${local.deliverables_path}/id_rsa.pub")
   content         = var.ssh_public_key
   file_permission = "644"
