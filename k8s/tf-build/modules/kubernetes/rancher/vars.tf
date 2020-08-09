@@ -30,10 +30,16 @@ variable "deliverables_path" {
   default     = "./deliverables"
 }
 
-variable "cluster_nodes" {
+variable "master_nodes" {
   type    = list
   default = []
 }
+
+variable "worker_nodes" {
+  type    = list
+  default = []
+}
+
 
 variable "bootstrap_rancher" {
   type    = bool
