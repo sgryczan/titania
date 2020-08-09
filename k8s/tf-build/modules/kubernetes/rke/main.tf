@@ -22,7 +22,7 @@ resource "rke_cluster" "cluster" {
     content {
       address           = nodes.value.ip
       hostname_override = nodes.value.name
-      user              = "ubuntu"
+      user              = var.ssh_user
       role              = ["controlplane", "etcd"]
       ssh_key           = var.ssh_private_key
     }
@@ -36,7 +36,7 @@ resource "rke_cluster" "cluster" {
     content {
       address           = nodes.value.ip
       hostname_override = nodes.value.name
-      user              = "ubuntu"
+      user              = var.ssh_user
       role              = ["worker"]
       ssh_key           = var.ssh_private_key
     }

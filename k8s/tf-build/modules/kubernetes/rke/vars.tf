@@ -3,6 +3,11 @@ variable "ssh_private_key" {
   description = "SSH private key"
 }
 
+variable "ssh_user" {
+  type = string
+  default = "ubuntu"
+}
+
 variable "deliverables_path" {
   type        = string
   description = "Path to deliverables directory"
