@@ -48,7 +48,7 @@ resource "kubernetes_daemonset" "titania-boot" {
         host_network = true
         
         container {
-          image = "sgryczan/titania:"${var.image_tag}""
+          image = join("", "sgryczan/titania:", var.image_tag)
           name  = "titania-boot"
           args = [
             "api"
@@ -115,7 +115,7 @@ resource "kubernetes_deployment" "titania-api" {
 
       spec {
         container {
-          image = "sgryczan/titania-api:"${var.image_tag}""
+          image = join("", "sgryczan/titania-api:", var.image_tag)
           name  = "titania-api"
 
           port {
