@@ -59,14 +59,14 @@ data "template_file" "netplan" {
 }
 
 data "template_file" "repo_pkg" {
-  template = file("${path.module}/cloudinit/repo-pkg.tpl")
+  template = file("${path.module}/cloudinit/templates/repo-pkg.tpl")
   vars = {
     package_repo_url = var.package_repo_url != "" ? var.package_repo_url : ""
   }
 }
 
 data "template_file" "repo_docker" {
-  template = file("${path.module}/cloudinit/repo-docker.tpl")
+  template = file("${path.module}/cloudinit/templates/repo-docker.tpl")
   vars = {
     docker_repo_url = var.docker_repo_url != "" ? var.docker_repo_url : ""
   }
