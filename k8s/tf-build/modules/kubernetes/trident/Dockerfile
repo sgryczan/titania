@@ -6,7 +6,8 @@ ENV TRIDENTCTL_VERSION=20.07.0
 
 RUN apk add --no-cache \
     bash \
-    jq
+    jq \
+    git
 
 RUN apk add --no-cache --virtual .build-deps curl \
   && curl -Lo /bin/kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
