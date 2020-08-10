@@ -20,7 +20,7 @@ resource "rke_cluster" "cluster" {
   }
 
   services {
-    dynamic "kube-controller" {
+    dynamic "kube_controller" {
       for_each = length(var.kube_controller_extra_args) == 0 ? [] : [1]
       content {
         extra_args = var.kube_controller_extra_args
