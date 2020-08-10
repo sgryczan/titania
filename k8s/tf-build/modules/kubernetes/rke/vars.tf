@@ -51,3 +51,13 @@ variable "kube_controller_extra_args" {
     "cluster-signing-key-file" = "/etc/kubernetes/ssl/kube-ca-key.pem"
   }
 }
+
+variable "master_node_labels" {
+  type = map
+  default = {}
+}
+
+variable "ingress_node_selector" {
+  type = map
+  default = {}
+}

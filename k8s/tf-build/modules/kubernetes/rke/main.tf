@@ -28,6 +28,13 @@ resource "rke_cluster" "cluster" {
     }
   }
 
+  dynamic "ingress" {
+    for_each = length(var.ingress_node_selector) == 0 ? [] : [1]
+    content {
+      node_selector = var.ingress_node_selector
+    }
+  }
+
   dynamic "private_registries" {
     for_each = [for r in var.private_registries : {
       url = r["url"]
@@ -50,6 +57,7 @@ resource "rke_cluster" "cluster" {
       user              = var.ssh_user
       role              = ["controlplane", "etcd"]
       ssh_key           = var.ssh_private_key
+      labels            = var.master_node_labels
     }
   }
 
