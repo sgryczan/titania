@@ -15,3 +15,7 @@ variable "dataLIF" {}
 variable "namespace" {
     default = "trident"
 }
+
+variable "kubeconfig" {
+    default = ""
+}

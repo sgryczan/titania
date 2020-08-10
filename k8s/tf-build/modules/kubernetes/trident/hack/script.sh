@@ -20,14 +20,9 @@ function parse_input() {
 }
 
 function install_trident() {
+    export KUBECONFIG=${KUBECONFIG}
     tridentctl install -n ${NAMESPACE}
-}
-
-function create_backend() {
     tridentctl -n ${NAMESPACE} create backend -f ${BACKEND}
-}
-
-function create_storageclass() {
     cat ${STORAGECLASSES} | kubectl apply -f -
 }
 
@@ -43,6 +38,4 @@ function produce_output() {
 check_deps
 parse_input
 install_trident
-create_backend
-create_storageclass
 produce_output

@@ -34,6 +34,7 @@ data "external" "script" {
     namespace = var.namespace
     backend = join("", [path.cwd, "/trident_backends.json"])
     storageclasses = join("", [path.cwd, "/storageclasses.yaml"])
+    kubeconfig = var.kubeconfig
   }
 }
 
