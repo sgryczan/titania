@@ -47,7 +47,7 @@ variable "network_plugin" {
 variable "kube_controller_extra_args" {
   type = map
   default = {
-    "cluster-signing-cert-file" = "/etc/kubernetes/ssl/kube-ca.crt"
-    "cluster-signing-key-file" = "/etc/kubernetes/ssl/kube-ca-key.crt"
+    "cluster-signing-cert-file" = "/etc/kubernetes/ssl/kube-ca.pem"
+    "cluster-signing-key-file" = "/etc/kubernetes/ssl/kube-ca-key.pem"
   }
 }
