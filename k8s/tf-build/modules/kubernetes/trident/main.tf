@@ -28,7 +28,7 @@ resource "local_file" "storage_classes" {
 
 
 data "external" "script" {
-  program = ["bash", "${path.root}/script.sh"]
+  program = ["bash", "${path.module}/hack/script.sh"]
 
   query = {
     namespace = var.namespace
