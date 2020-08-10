@@ -62,7 +62,7 @@ resource "kubernetes_daemonset" "titania-boot" {
             "/ipxe/src/bin/undionly.kpxe",
             "--ipxe-bios",
             "/ipxe/src/bin/undionly.kpxe",
-            "http://titania-api"
+            join("", ["http://", var.hostname])
           ]
           image_pull_policy = "Always"
 
