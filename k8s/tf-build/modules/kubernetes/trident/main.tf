@@ -37,3 +37,10 @@ data "external" "script" {
   }
 }
 
+resource "null_resource" "output" {
+    provisioner "local-exec" {
+     command = echo ${data.external.script.result.result}
+    }
+}
+
+
