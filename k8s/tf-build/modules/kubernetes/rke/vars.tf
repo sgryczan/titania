@@ -43,3 +43,11 @@ variable "network_plugin" {
   type = string
   default = "canal"
 }
+
+variable "kube_controller_extra_args" {
+  type = map
+  default = {
+    "cluster-signing-cert-file" = "/etc/kubernetes/ssl/kube-ca.crt"
+    "cluster-signing-key-file" = "/etc/kubernetes/ssl/kube-ca-key.crt"
+  }
+}

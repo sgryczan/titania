@@ -19,6 +19,15 @@ resource "rke_cluster" "cluster" {
     plugin = var.network_plugin
   }
 
+  services {
+    dynamic "kube-controller" {
+      for_each = length(var.kube_controller_extra_args) == 0 ? [] : [1]
+      content {
+        extra_args = var.kube_controller_extra_args
+      }
+    }
+  }
+
   dynamic "private_registries" {
     for_each = [for r in var.private_registries : {
       url = r["url"]
