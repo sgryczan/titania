@@ -28,6 +28,7 @@ runcmd:
   - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - apt install -y docker-ce docker-ce-cli containerd.io
   - usermod -aG docker ubuntu
-  - nc -l 1234 # signal local-exec provisioner that cloud-init cmds are complete
   - service open-iscsi start
   - service multipath-tools start
+  - nc -l 1234 # signal local-exec provisioner that cloud-init cmds are complete
+  
